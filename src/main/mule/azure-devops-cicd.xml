@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="86015ec2-bddf-4da8-873f-95b59aac2a31" >
+		<http:listener-connection host="${http.host}" port="${http.host}" />
+	</http:listener-config>
+	<configuration-properties doc:name="Configuration properties" doc:id="fccf9d3a-86b0-4f29-97d6-df12d24374a0" file="config/${env}-config.yaml" />
+	<global-property doc:name="Global Property" doc:id="b0b0032f-527a-4562-9462-3cfbd7a675bc" name="env" value="dev" />
+	<flow name="azure-devops-cicdFlow" doc:id="9d9e43f4-334b-431e-b7a2-e7c650bab2ec" >
+		<http:listener doc:name="Listener" doc:id="0cdded8f-54b5-4943-a415-9b026c4d1132" config-ref="HTTP_Listener_config" path="${http.path}"/>
+		<ee:transform doc:name="Transform Message" doc:id="c73d0f46-fbed-4d07-a1ba-331adc34f233" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message" : "pipeline created"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="a8d1f28b-d82a-43bf-b643-4801a7c4504d" message="#[payload]"/>
+	</flow>
+</mule>
