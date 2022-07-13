@@ -22,6 +22,14 @@ output application/json
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="a0f8214c-6dbb-414b-9629-8c86ae893ee3" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+"Second addition"]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
 		<logger level="INFO" doc:name="Logger" doc:id="a8d1f28b-d82a-43bf-b643-4801a7c4504d" message="#[payload]"/>
 	</flow>
 </mule>
